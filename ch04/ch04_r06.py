@@ -6,6 +6,7 @@ import random
 from fractions import Fraction
 from statistics import mean
 
+
 def arrival1(n=8):
     """
     >>> random.seed(1)
@@ -24,6 +25,7 @@ def arrival1(n=8):
     while True:
         yield random.randrange(n)
 
+
 def arrival2(n=8):
     """
     >>> random.seed(1)
@@ -41,9 +43,10 @@ def arrival2(n=8):
     """
     p = 0
     while True:
-        step = random.choice([-1,0,+1])
+        step = random.choice([-1, 0, +1])
         p += step
         yield abs(p) % n
+
 
 def samples(limit, generator):
     """
@@ -71,15 +74,18 @@ def samples(limit, generator):
     2
     """
     for n, value in enumerate(generator):
-        if n == limit: break
+        if n == limit:
+            break
         yield value
+
 
 def expected(n=8):
     """
     >>> expected(6)
     Fraction(147, 10)
     """
-    return n * sum(Fraction(1,(i+1)) for i in range(n))
+    return n * sum(Fraction(1, (i + 1)) for i in range(n))
+
 
 def coupon_collector(n, data):
     """
@@ -90,11 +96,12 @@ def coupon_collector(n, data):
     count, collection = 0, set()
     for item in data:
         count += 1
-        #collection = collection|{item}
+        # collection = collection|{item}
         collection.add(item)
         if len(collection) == n:
             yield count
             count, collection = 0, set()
+
 
 def summary(n, limit, arrival_function):
     expected_time = float(expected(n))
@@ -102,40 +109,37 @@ def summary(n, limit, arrival_function):
     data = samples(limit, arrival_function(n))
     wait_times = list(coupon_collector(n, data))
     average_time = mean(wait_times)
-    print("Coupon collection, n={n}"
-        .format_map(vars()))
-    print("Arrivals per '{arrival_function.__name__}'"
-        .format_map(vars()))
-    print("Expected = {expected_time:.2f}"
-        .format_map(vars()))
-    print("Actual {average_time:.2f}"
-        .format_map(vars()))
+    print("Coupon collection, n={n}".format_map(vars()))
+    print("Arrivals per '{arrival_function.__name__}'".format_map(vars()))
+    print("Expected = {expected_time:.2f}".format_map(vars()))
+    print("Actual {average_time:.2f}".format_map(vars()))
+
 
 __test__ = {
-    'arrival1': '''
+    "arrival1": """
 >>> random.seed(1)
 >>> summary( 8, 1000, arrival1 )
 Coupon collection, n=8
 Arrivals per 'arrival1'
 Expected = 21.74
 Actual 20.81
-''',
-
-    'arrival2': '''
+""",
+    "arrival2": """
 >>> random.seed(1)
 >>> summary( 8, 1000, arrival2 )
 Coupon collection, n=8
 Arrivals per 'arrival2'
 Expected = 21.74
 Actual 39.68
-'''
+""",
 }
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod()
 
     random.seed(1)
-    summary( 8, 1000, arrival1 )
+    summary(8, 1000, arrival1)
 
     random.seed(1)
-    summary( 8, 1000, arrival2 )
+    summary(8, 1000, arrival2)

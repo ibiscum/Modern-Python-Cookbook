@@ -7,6 +7,7 @@ from collections import Counter
 import math
 import statistics
 
+
 def raw_data(n=8, limit=1000, arrival_function=arrival1):
     """
     >>> random.seed(1)
@@ -18,6 +19,7 @@ def raw_data(n=8, limit=1000, arrival_function=arrival1):
     wait_times = Counter(coupon_collector(n, data))
     return wait_times
 
+
 class CounterStatistics:
     """
     >>> data = Counter( [10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5] )
@@ -27,7 +29,8 @@ class CounterStatistics:
     >>> round(cs.stddev**2,1)
     11.0
     """
-    def __init__(self, raw_counter:Counter):
+
+    def __init__(self, raw_counter: Counter):
         self.raw_counter = raw_counter
 
         self.mean = self.compute_mean()
@@ -36,16 +39,17 @@ class CounterStatistics:
     def compute_mean(self):
         total, count = 0, 0
         for value, frequency in self.raw_counter.items():
-            total += value*frequency
+            total += value * frequency
             count += frequency
-        return total/count
+        return total / count
 
     def compute_stddev(self):
         total, count = 0, 0
         for value, frequency in self.raw_counter.items():
-            total += frequency*(value-self.mean)**2
+            total += frequency * (value - self.mean) ** 2
             count += frequency
-        return math.sqrt(total/(count-1))
+        return math.sqrt(total / (count - 1))
+
 
 class UpdateableCounterStatistics:
     """
@@ -66,14 +70,17 @@ class UpdateableCounterStatistics:
     >>> round(cs.stddev**2,1)
     11.0
     """
-    def __init__(self, counter:Counter=None):
+
+    def __init__(self, counter: Counter = None):
         if counter:
             self.raw_counter = counter
             self.count = sum(self.raw_counter[k] for k in self.raw_counter)
-            self.sum = sum(self.raw_counter[k]*k for k in self.raw_counter)
-            self.sum2 = sum(self.raw_counter[k]*k**2 for k in self.raw_counter)
-            self.mean = self.sum/self.count
-            self.stddev = math.sqrt((self.sum2-self.sum**2/self.count)/(self.count-1))
+            self.sum = sum(self.raw_counter[k] * k for k in self.raw_counter)
+            self.sum2 = sum(self.raw_counter[k] * k**2 for k in self.raw_counter)
+            self.mean = self.sum / self.count
+            self.stddev = math.sqrt(
+                (self.sum2 - self.sum**2 / self.count) / (self.count - 1)
+            )
         else:
             self.raw_counter = Counter()
             self.count = 0
@@ -87,17 +94,19 @@ class UpdateableCounterStatistics:
         self.count += 1
         self.sum += value
         self.sum2 += value**2
-        self.mean = self.sum/self.count
+        self.mean = self.sum / self.count
         if self.count > 1:
-            self.stddev = math.sqrt((self.sum2-self.sum**2/self.count)/(self.count-1))
+            self.stddev = math.sqrt(
+                (self.sum2 - self.sum**2 / self.count) / (self.count - 1)
+            )
+
 
 __test__ = {
-    'expected': '''
+    "expected": """
 >>> expected(8)
 Fraction(761, 35)
-''',
-
-    'raw_data': '''
+""",
+    "raw_data": """
 >>> import random
 >>> random.seed(1)
 >>> data = raw_data(8)
@@ -105,9 +114,8 @@ Fraction(761, 35)
 20.81
 >>> round(statistics.stdev(data.elements()), 2)
 7.02
-''',
-
-    'CounterStatistics': '''
+""",
+    "CounterStatistics": """
 >>> import random
 >>> random.seed(1)
 >>> data = raw_data(8)
@@ -116,9 +124,8 @@ Fraction(761, 35)
 20.81
 >>> round(stats.stddev, 2)
 7.02
-''',
-
-    'UpdateableCounterStatistics': '''
+""",
+    "UpdateableCounterStatistics": """
 >>> import random
 >>> random.seed(1)
 >>> data = raw_data(8)
@@ -127,17 +134,21 @@ Fraction(761, 35)
 20.81
 >>> round(stats.stddev, 2)
 7.02
-''',
+""",
 }
+
 
 def test():
     import doctest
+
     doctest.testmod()
+
 
 if __name__ == "__main__":
     test()
 
     import random
+
     random.seed(1)
     data = raw_data(8)
 

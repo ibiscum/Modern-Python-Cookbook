@@ -13,23 +13,26 @@ import logging
 detail_log = logging.getLogger("overview_stats.detail")
 write_log = logging.getLogger("overview_stats.write")
 
+
 def get_options(argv):
     parser = argparse.ArgumentParser()
-    parser.add_argument('file', nargs='*')
-    parser.add_argument('-o', '--output')
+    parser.add_argument("file", nargs="*")
+    parser.add_argument("-o", "--output")
     options = parser.parse_args(argv)
     detail_log.debug("options: {}".format(options))
     return options
+
 
 def main():
     options = get_options(sys.argv[1:])
     if options.output is not None:
         report_path = Path(options.output)
-        with report_path.open('w') as result_file:
+        with report_path.open("w") as result_file:
             process_all_files(result_file, options.file)
         write_log.info("wrote {}".format(report_path))
     else:
         process_all_files(sys.stdout, options.file)
+
 
 def process_all_files(result_file, file_names):
     for source_path in (Path(n) for n in file_names):
@@ -37,9 +40,8 @@ def process_all_files(result_file, file_names):
         with source_path.open() as source_file:
             game_iter = yaml.load_all(source_file)
             statistics = gather_stats(game_iter)
-            result_file.write(
-                yaml.dump(dict(statistics), explicit_start=True)
-            )
+            result_file.write(yaml.dump(dict(statistics), explicit_start=True))
+
 
 def gather_stats(game_iter):
     counts = Counter()
@@ -60,9 +62,11 @@ def gather_stats(game_iter):
         counts[event] += 1
     return counts
 
+
 import logging.config
+
 if __name__ == "__main__":
-    config_yaml = '''
+    config_yaml = """
 version: 1
 formatters:
     default:
@@ -94,7 +98,7 @@ loggers:
 
 root:
     level: INFO
-'''
+"""
     # logging.basicConfig(stream=sys.stderr, level=logging.INFO)
     logging.config.dictConfig(yaml.load(config_yaml))
     main()

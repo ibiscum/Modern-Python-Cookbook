@@ -5,6 +5,7 @@ Chapter 11, recipe 3.
 
 from math import sqrt, pi, exp, erf
 
+
 def phi(n):
     """
     Computes the cumulative distribution function of the standard,
@@ -18,7 +19,8 @@ def phi(n):
     0.841
 
     """
-    return (1+erf(n/sqrt(2)))/2
+    return (1 + erf(n / sqrt(2))) / 2
+
 
 def frequency(n):
     """
@@ -31,9 +33,11 @@ def frequency(n):
     >>> round(frequency(3), 3)
     0.997
     """
-    return phi(n)-phi(-n)
+    return phi(n) - phi(-n)
+
 
 import csv
+
 
 def raw_reader(data_file):
     """
@@ -66,8 +70,10 @@ def raw_reader(data_file):
     for row in data_reader:
         yield row
 
+
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod(optionflags=doctest.DONT_ACCEPT_TRUE_FOR_1)
 
     print(phi(0))

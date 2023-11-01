@@ -7,6 +7,7 @@ from collections import Counter
 import math
 import statistics
 
+
 def raw_data(n=8, limit=1000, arrival_function=arrival1):
     """
     >>> random.seed(1)
@@ -18,6 +19,7 @@ def raw_data(n=8, limit=1000, arrival_function=arrival1):
     wait_times = Counter(coupon_collector(n, data))
     return wait_times
 
+
 class LazyCounterStatistics:
     """
     >>> data = Counter( [10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5] )
@@ -28,12 +30,12 @@ class LazyCounterStatistics:
     11.0
     """
 
-    def __init__(self, raw_counter:Counter):
+    def __init__(self, raw_counter: Counter):
         self.raw_counter = raw_counter
 
     @property
     def sum(self):
-        return sum(f*v for v, f in self.raw_counter.items())
+        return sum(f * v for v, f in self.raw_counter.items())
 
     @property
     def count(self):
@@ -41,7 +43,7 @@ class LazyCounterStatistics:
 
     @property
     def sum2(self):
-        return sum(f*v**2 for v, f in self.raw_counter.items())
+        return sum(f * v**2 for v, f in self.raw_counter.items())
 
     @property
     def mean(self):
@@ -49,19 +51,19 @@ class LazyCounterStatistics:
 
     @property
     def variance(self):
-        return (self.sum2 - self.sum**2/self.count)/(self.count-1)
+        return (self.sum2 - self.sum**2 / self.count) / (self.count - 1)
 
     @property
     def stddev(self):
         return math.sqrt(self.variance)
 
+
 __test__ = {
-    'expected': '''
+    "expected": """
 >>> expected(8)
 Fraction(761, 35)
-''',
-
-    'raw_data': '''
+""",
+    "raw_data": """
 >>> import random
 >>> random.seed(1)
 >>> data = raw_data(8)
@@ -69,9 +71,8 @@ Fraction(761, 35)
 20.81
 >>> round(statistics.stdev(data.elements()), 2)
 7.02
-''',
-
-    'LazyCounterStatistics': '''
+""",
+    "LazyCounterStatistics": """
 >>> import random
 >>> random.seed(1)
 >>> data = raw_data(8)
@@ -80,17 +81,21 @@ Fraction(761, 35)
 20.81
 >>> round(stats.stddev, 2)
 7.02
-''',
+""",
 }
+
 
 def test():
     import doctest
+
     doctest.testmod()
+
 
 if __name__ == "__main__":
     test()
 
     import random
+
     random.seed(1)
     data = raw_data(8)
 

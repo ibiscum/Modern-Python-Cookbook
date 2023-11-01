@@ -15,6 +15,7 @@ https://en.wikipedia.org/wiki/Binomial_coefficient
 
 from math import factorial
 
+
 def expected(n, population=8):
     """
     What is the probability p(n, d) that exactly n boxes of cereal will
@@ -26,7 +27,8 @@ def expected(n, population=8):
 
         p(n, d) = \frac{d!}{d^n} \lbrace\textstyle{ n-1 \atop d-1 }\rbrace
     """
-    return factorial(population)/population**n * stirling2(n-1, population-1)
+    return factorial(population) / population**n * stirling2(n - 1, population - 1)
+
 
 def binom(n, k):
     """
@@ -35,7 +37,8 @@ def binom(n, k):
 
         \binom n k = \frac{n!}{k!\,(n-k)!} \quad \text{for }\ 0\leq k\leq n
     """
-    return factorial(n)/(factorial(k)*factorial(n-k))
+    return factorial(n) / (factorial(k) * factorial(n - k))
+
 
 def stirling2(n, k):
     """
@@ -60,12 +63,17 @@ def stirling2(n, k):
         \left\{ {n \atop k}\right\} = \frac{1}{k!}\sum_{j=0}^{k} (-1)^{k-j} \binom{k}{j} j^n
     """
 
-    return 1/factorial(k)*sum( (-1 if (k-j)%2 else 1)*binom(k,j)*j**n for j in range(0,k+1) )
+    return (
+        1
+        / factorial(k)
+        * sum(
+            (-1 if (k - j) % 2 else 1) * binom(k, j) * j**n for j in range(0, k + 1)
+        )
+    )
+
 
 if __name__ == "__main__":
-
-    for i in range(8,30):
+    for i in range(8, 30):
         print(i, expected(i, 8))
 
-
-    print(binom(24,12))
+    print(binom(24, 12))

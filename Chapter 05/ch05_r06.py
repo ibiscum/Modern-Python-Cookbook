@@ -9,6 +9,7 @@ import argparse
 from ch03_r05 import haversine, MI, NM, KM
 from ch05_r04 import point_type, display
 
+
 def get_options(argv=sys.argv):
     """
     >>> os.environ['UNITS'] = 'NM'
@@ -39,17 +40,19 @@ def get_options(argv=sys.argv):
         sys.exit("Invalid value for UNITS, not KM, NM, or MI")
     SystemExit: Invalid value for UNITS, not KM, NM, or MI
     """
-    default_units = os.environ.get('UNITS', 'KM')
-    if default_units not in ('KM', 'NM', 'MI'):
+    default_units = os.environ.get("UNITS", "KM")
+    if default_units not in ("KM", "NM", "MI"):
         sys.exit("Invalid value for UNITS, not KM, NM, or MI")
-    default_home_port = os.environ.get('HOME_PORT')
+    default_home_port = os.environ.get("HOME_PORT")
     parser = argparse.ArgumentParser()
 
-    parser.add_argument('-r', action='store',
-        choices=('NM', 'MI', 'KM'), default=default_units)
-    parser.add_argument('p1', action='store', type=point_type)
-    parser.add_argument('p2', nargs='?', action='store', type=point_type,
-        default=default_home_port)
+    parser.add_argument(
+        "-r", action="store", choices=("NM", "MI", "KM"), default=default_units
+    )
+    parser.add_argument("p1", action="store", type=point_type)
+    parser.add_argument(
+        "p2", nargs="?", action="store", type=point_type, default=default_home_port
+    )
     options = parser.parse_args(argv[1:])
 
     if options.p2 is None:
@@ -57,16 +60,20 @@ def get_options(argv=sys.argv):
 
     return options
 
+
 def main():
     options = get_options()
     lat_1, lon_1 = options.p1
     lat_2, lon_2 = options.p2
     display(lat_1, lon_1, lat_2, lon_2, options.r)
 
+
 def test():
     import doctest
-    doctest.testmod(verbose=1);
+
+    doctest.testmod(verbose=1)
+
 
 if __name__ == "__main__":
     test()
-    #main()
+    # main()

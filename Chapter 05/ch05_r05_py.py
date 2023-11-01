@@ -6,21 +6,28 @@ Chapter 5, recipe 5, part "py"
 import cmd
 import sys
 
+
 class REPL(cmd.Cmd):
-    prompt=">>> "
+    prompt = ">>> "
+
     def preloop(self):
-        print( sys.version )
+        print(sys.version)
+
     def do_def(self, arg):
         pass
+
     def do_class(self, arg):
         pass
+
     def do_EOF(self, arg):
         return True
+
     def default(self, arg):
         if "=" in arg:
-            print( "Assignment" )
+            print("Assignment")
         else:
-            print( "Expression" )
+            print("Expression")
+
 
 if __name__ == "__main__":
     py = REPL()

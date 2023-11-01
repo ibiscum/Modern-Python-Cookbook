@@ -5,7 +5,9 @@ Chapter 6, recipe 3 and 4
 import random
 
 from collections import namedtuple
-Card = namedtuple('Card', ('rank', 'suit'))
+
+Card = namedtuple("Card", ("rank", "suit"))
+
 
 class Hand:
     """
@@ -23,37 +25,39 @@ class Hand:
     AttributeError: 'Hand' object has no attribute 'total'
     """
 
-    __slots__ = ('hand', 'bet')
+    __slots__ = ("hand", "bet")
 
     def __init__(self, bet, hand=None):
-        self.hand= hand or []
-        self.bet= bet
+        self.hand = hand or []
+        self.bet = bet
 
     def deal(self, card):
         self.hand.append(card)
 
     def __repr__(self):
         return "{class_}({0}, {1})".format(
-            self.bet, self.hand,
-            class_= self.__class__.__name__,
+            self.bet,
+            self.hand,
+            class_=self.__class__.__name__,
         )
+
 
 def test():
     import doctest
+
     doctest.testmod()
+
 
 if __name__ == "__main__":
     test()
 
     SUITS = (
-        '\N{black spade suit}',
-        '\N{white heart suit}',
-        '\N{white diamond suit}',
-        '\N{black club suit}',
+        "\N{black spade suit}",
+        "\N{white heart suit}",
+        "\N{white diamond suit}",
+        "\N{black club suit}",
     )
-    deck = [
-        Card(r,s) for r in range(1,14) for s in SUITS
-    ]
+    deck = [Card(r, s) for r in range(1, 14) for s in SUITS]
     random.seed(2)
     random.shuffle(deck)
     dealer = iter(deck)

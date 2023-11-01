@@ -4,6 +4,7 @@ Chapter 6, recipe 6
 """
 import math
 
+
 class StatsList(list):
     """
     >>> subset1 = StatsList([10, 8, 13, 9, 11])
@@ -16,6 +17,7 @@ class StatsList(list):
     >>> round(data.variance(), 1)
     11.0
     """
+
     def sum(self):
         return sum(v for v in self)
 
@@ -29,11 +31,13 @@ class StatsList(list):
         return self.sum() / self.count()
 
     def variance(self):
-        return (self.sum2() - self.sum()**2/self.count())/(self.count()-1)
+        return (self.sum2() - self.sum() ** 2 / self.count()) / (self.count() - 1)
 
     def stddev(self):
         return math.sqrt(self.variance())
 
+
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod()

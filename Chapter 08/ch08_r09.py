@@ -5,7 +5,7 @@ Chapter 8, recipe 9.
 from pprint import pprint
 
 
-text_1 = '''\
+text_1 = """\
 10	8.04
 8	6.95
 13	7.58
@@ -17,9 +17,9 @@ text_1 = '''\
 12	10.84
 7	4.82
 5	5.68
-'''
+"""
 
-text_2 = '''\
+text_2 = """\
 10	9.14
 8	8.14
 13	8.74
@@ -31,9 +31,10 @@ text_2 = '''\
 12	9.13
 7	7.26
 5	4.74
-'''
+"""
 
 from typing import *
+
 
 def get(text: str) -> Iterator[List[str]]:
     for line in text.splitlines():
@@ -41,17 +42,15 @@ def get(text: str) -> Iterator[List[str]]:
             continue
         yield line.split()
 
+
 from collections import namedtuple
 
-DataPair = namedtuple('DataPair', ['x', 'y'])
+DataPair = namedtuple("DataPair", ["x", "y"])
 
 # Alternative
 
-DataPair = NamedTuple('DataPair', [
-        ('x', float),
-        ('y', float)
-    ]
-)
+DataPair = NamedTuple("DataPair", [("x", float), ("y", float)])
+
 
 def cleanse(iterable: Iterable[List[str]]) -> Iterator[DataPair]:
     for text_items in iterable:
@@ -62,17 +61,22 @@ def cleanse(iterable: Iterable[List[str]]) -> Iterator[DataPair]:
         except Exception as ex:
             print(ex, repr(text_items))
 
-RankYDataPair = namedtuple('RankYDataPair', ['y_rank', 'pair'])
+
+RankYDataPair = namedtuple("RankYDataPair", ["y_rank", "pair"])
 
 PairIter = Iterable[DataPair]
 RankPairIter = Iterator[RankYDataPair]
 
-def rank_by_y(iterable:PairIter) -> RankPairIter:
-    all_data = sorted(iterable, key=lambda pair:pair.y)
+
+def rank_by_y(iterable: PairIter) -> RankPairIter:
+    all_data = sorted(iterable, key=lambda pair: pair.y)
     for y_rank, pair in enumerate(all_data, start=1):
         yield RankYDataPair(y_rank, pair)
 
+
 from types import SimpleNamespace
+
+
 def cleanse_ns(iterable):
     for text_items in iterable:
         try:
@@ -82,27 +86,31 @@ def cleanse_ns(iterable):
         except Exception as ex:
             print(ex, repr(text_items))
 
+
 def rank_by_y_ns(iterable):
-    all_data = sorted(iterable, key=lambda pair:pair.y)
+    all_data = sorted(iterable, key=lambda pair: pair.y)
     for y_rank, pair in enumerate(all_data, start=1):
         pair.y_rank = y_rank
         yield pair
 
+
 def timing():
     import timeit
+
     tuple_runtime = timeit.timeit(
-        '''list(rank_by_y(cleanse(get(text_1))))''',
-        '''from ch08_r09 import get, cleanse, rank_by_y, text_1''',
+        """list(rank_by_y(cleanse(get(text_1))))""",
+        """from ch08_r09 import get, cleanse, rank_by_y, text_1""",
     )
     namespace_runtime = timeit.timeit(
-        '''list(rank_by_y_ns(cleanse_ns(get(text_1))))''',
-        '''from ch08_r09 import get, cleanse_ns, rank_by_y_ns, text_1''',
+        """list(rank_by_y_ns(cleanse_ns(get(text_1))))""",
+        """from ch08_r09 import get, cleanse_ns, rank_by_y_ns, text_1""",
     )
     print("{0} {1}".format("tuple", tuple_runtime))
     print("{0} {1}".format("namespace", namespace_runtime))
 
+
 __test__ = {
-    'get': '''
+    "get": """
 >>> pprint(list(get(text_1)))
 [['10', '8.04'],
  ['8', '6.95'],
@@ -115,9 +123,8 @@ __test__ = {
  ['12', '10.84'],
  ['7', '4.82'],
  ['5', '5.68']]
-''',
-
-    'get-cleanse': '''
+""",
+    "get-cleanse": """
 >>> pprint(list(cleanse(get(text_1))))
 [DataPair(x=10.0, y=8.04),
  DataPair(x=8.0, y=6.95),
@@ -130,9 +137,8 @@ __test__ = {
  DataPair(x=12.0, y=10.84),
  DataPair(x=7.0, y=4.82),
  DataPair(x=5.0, y=5.68)]
-''',
-
-    'get-cleanse-rank': '''
+""",
+    "get-cleanse-rank": """
 >>> data = rank_by_y(cleanse(get(text_1)))
 >>> pprint(list(data))
 [RankYDataPair(y_rank=1, pair=DataPair(x=4.0, y=4.26)),
@@ -146,10 +152,11 @@ __test__ = {
  RankYDataPair(y_rank=9, pair=DataPair(x=9.0, y=8.81)),
  RankYDataPair(y_rank=10, pair=DataPair(x=14.0, y=9.96)),
  RankYDataPair(y_rank=11, pair=DataPair(x=12.0, y=10.84))]
-''',
+""",
 }
 
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod()
     timing()

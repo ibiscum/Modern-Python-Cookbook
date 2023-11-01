@@ -7,20 +7,21 @@ from pathlib import Path
 import csv
 from pprint import pprint
 
-log_rows = \
-[['date', 'engine on', 'fuel height'],
- ['', 'engine off', 'fuel height'],
- ['', 'Other notes', ''],
- ['', '', ''],
- ['10/25/13', '08:24:00 AM', '29'],
- ['', '01:15:00 PM', '27'],
- ['', "calm seas -- anchor solomon's island", ''],
- ['10/26/13', '09:12:00 AM', '27'],
- ['', '06:25:00 PM', '22'],
- ['', "choppy -- anchor in jackson's creek", '']]
+log_rows = [
+    ["date", "engine on", "fuel height"],
+    ["", "engine off", "fuel height"],
+    ["", "Other notes", ""],
+    ["", "", ""],
+    ["10/25/13", "08:24:00 AM", "29"],
+    ["", "01:15:00 PM", "27"],
+    ["", "calm seas -- anchor solomon's island", ""],
+    ["10/26/13", "09:12:00 AM", "27"],
+    ["", "06:25:00 PM", "22"],
+    ["", "choppy -- anchor in jackson's creek", ""],
+]
 
 __test__ = {
-    'load': '''
+    "load": """
 >>> with Path('fuel.csv').open() as source_file:
 ...    reader = csv.reader(source_file)
 ...    log_rows = list(reader)
@@ -39,9 +40,8 @@ __test__ = {
  ['10/26/13', '09:12:00 AM', '27'],
  ['', '06:25:00 PM', '22'],
  ['', "choppy -- anchor in jackson's creek", '']]
-''',
-
-    'recipe': '''
+""",
+    "recipe": """
 
 Step 1
 
@@ -72,10 +72,10 @@ Step 3
 [(['10/25/13', '08:24:00 AM', '29'], ['', '01:15:00 PM', '27']),
  (['10/26/13', '09:12:00 AM', '27'], ['', '06:25:00 PM', '22'])]
 
-''',
-
+""",
 }
 
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod()

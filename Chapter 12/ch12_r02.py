@@ -48,30 +48,34 @@ from ch12_r01 import Card, Deck
 from flask import Flask, jsonify, request, abort
 from http import HTTPStatus
 
-dealer = Flask('dealer')
+dealer = Flask("dealer")
 
 import os
-random.seed(os.environ.get('DEAL_APP_SEED'))
+
+random.seed(os.environ.get("DEAL_APP_SEED"))
 deck = Deck()
+
 
 @dealer.before_request
 def check_json():
-    if 'json' in request.headers.get('Accept', '*/*'):
+    if "json" in request.headers.get("Accept", "*/*"):
         return
-    if 'json' == request.args.get('$format', 'html'):
+    if "json" == request.args.get("$format", "html"):
         return
     return abort(HTTPStatus.BAD_REQUEST)
 
-@dealer.route('/dealer/hand/')
+
+@dealer.route("/dealer/hand/")
 def deal():
     try:
-        hand_size = int(request.args.get('cards', 5))
+        hand_size = int(request.args.get("cards", 5))
         assert 1 <= hand_size < 53
     except Exception as ex:
         abort(HTTPStatus.BAD_REQUEST)
     cards = deck.deal(hand_size)
     response = jsonify([card.to_json() for card in cards])
     return response
+
 
 if __name__ == "__main__":
     dealer.run(use_reloader=True, threaded=False)

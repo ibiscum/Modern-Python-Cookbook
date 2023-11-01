@@ -2,13 +2,18 @@ from collections import Counter
 
 _global_counter = Counter()
 
+
 def count(key, increment=1):
     _global_counter[key] += increment
+
 
 def counts():
     return _global_counter.most_common()
 
+
 from collections import Counter
+
+
 class EventCounter:
     _counts = Counter()
 
@@ -18,8 +23,9 @@ class EventCounter:
     def counts(self):
         return EventCounter._counts.most_common()
 
+
 __test__ = {
-    'module_global': '''
+    "module_global": """
 >>> from ch07_r04 import *
 >>> from ch07_r03 import Dice1
 >>> d = Dice1(1)
@@ -28,9 +34,8 @@ __test__ = {
 ...     else: count('other')
 >>> print(counts())
 [('other', 833), ('seven', 167)]
-''',
-
-    'class_variable': '''
+""",
+    "class_variable": """
 >>> c1 = EventCounter()
 >>> c1.count('input')
 >>> c2 = EventCounter()
@@ -38,9 +43,10 @@ __test__ = {
 >>> c3 = EventCounter()
 >>> c3.counts()
 [('input', 2)]
-''',
+""",
 }
 
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod()

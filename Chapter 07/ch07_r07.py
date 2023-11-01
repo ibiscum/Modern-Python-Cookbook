@@ -3,14 +3,16 @@
 Chapter 7, recipe 7.
 """
 
+
 def writer_rule(iterable):
     for item in iterable:
-        if 'Lake' in item['writer']:
+        if "Lake" in item["writer"]:
             continue
         yield item
 
+
 __test__ = {
-    'chapter': '''
+    "chapter": """
 >>> from pprint import pprint
 >>> source = [
 ...    {'title': 'Eruption', 'writer': ['Emerson'], 'time': '2:43'},
@@ -119,9 +121,10 @@ pprint(data)
  {'time': '1:49', 'title': 'Manticore', 'writer': ['Emerson']},
  {'time': '3:54', 'title': 'Aquatarkus', 'writer': ['Emerson']}]
 
-'''
+"""
 }
 
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod()

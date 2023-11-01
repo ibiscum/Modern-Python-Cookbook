@@ -7,36 +7,49 @@ import csv
 from pathlib import Path
 from pprint import pprint
 
+
 def raw():
-    data_path = Path('waypoints.csv')
+    data_path = Path("waypoints.csv")
     with data_path.open() as data_file:
         data_reader = csv.DictReader(data_file)
         for row in data_reader:
             pprint(row)
 
+
 import datetime
+
+
 def clean_row(source_row):
-    source_row['lat_n']= float(source_row['lat'])
-    source_row['lon_n']= float(source_row['lon'])
-    source_row['ts_date']= datetime.datetime.strptime(source_row['date'],'%Y-%m-%d').date()
-    source_row['ts_time']= datetime.datetime.strptime(source_row['time'],'%H:%M:%S').time()
-    source_row['timestamp']= datetime.datetime.combine(source_row['ts_date'], source_row['ts_time'])
+    source_row["lat_n"] = float(source_row["lat"])
+    source_row["lon_n"] = float(source_row["lon"])
+    source_row["ts_date"] = datetime.datetime.strptime(
+        source_row["date"], "%Y-%m-%d"
+    ).date()
+    source_row["ts_time"] = datetime.datetime.strptime(
+        source_row["time"], "%H:%M:%S"
+    ).time()
+    source_row["timestamp"] = datetime.datetime.combine(
+        source_row["ts_date"], source_row["ts_time"]
+    )
     return source_row
+
 
 def cleanse(reader):
     for row in reader:
         yield clean_row(row)
 
+
 def clean():
-    data_path = Path('waypoints.csv')
+    data_path = Path("waypoints.csv")
     with data_path.open() as data_file:
         data_reader = csv.DictReader(data_file)
         clean_data_reader = cleanse(data_reader)
         for row in clean_data_reader:
             pprint(row)
 
+
 __test__ = {
-    'raw': '''
+    "raw": """
 >>> raw()
 {'date': '2012-11-27',
  'lat': '32.8321666666667',
@@ -50,9 +63,8 @@ __test__ = {
  'lat': '30.7171666666667',
  'lon': '-81.5525',
  'time': '11:35:00'}
-''',
-
-    'clean': '''
+""",
+    "clean": """
 >>> clean()
 {'date': '2012-11-27',
  'lat': '32.8321666666667',
@@ -81,9 +93,10 @@ __test__ = {
  'timestamp': datetime.datetime(2012, 11, 28, 11, 35),
  'ts_date': datetime.date(2012, 11, 28),
  'ts_time': datetime.time(11, 35)}
-''',
+""",
 }
 
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod()

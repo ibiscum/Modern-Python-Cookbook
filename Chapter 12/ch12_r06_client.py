@@ -8,26 +8,29 @@ import urllib.parse
 import json
 
 if __name__ == "__main__":
-
     # 1. Validate and get the OpenAPI specification.
 
     try:
         from swagger_spec_validator import validate_spec_url
-        validate_spec_url('http://127.0.0.1:5000/dealer/swagger.json')
+
+        validate_spec_url("http://127.0.0.1:5000/dealer/swagger.json")
         print("swagger.json is valid")
     except ImportError as ex:
         pass
 
     swagger_request = urllib.request.Request(
-        url = 'http://127.0.0.1:5000/dealer/swagger.json',
-        method = "GET",
-        headers = {
-            'Accept': 'application/json',
-        }
+        url="http://127.0.0.1:5000/dealer/swagger.json",
+        method="GET",
+        headers={
+            "Accept": "application/json",
+        },
     )
 
     from pprint import pprint
-    with urllib.request.urlopen('http://127.0.0.1:5000/dealer/swagger.json') as response:
+
+    with urllib.request.urlopen(
+        "http://127.0.0.1:5000/dealer/swagger.json"
+    ) as response:
         swagger = json.loads(response.read().decode("utf-8"))
         print(swagger)
 
@@ -39,24 +42,24 @@ if __name__ == "__main__":
         path="/dealer" + "/players",
         params=None,
         query=None,
-        fragment=None
+        fragment=None,
     )
 
     document = {
-        'name': 'Xander Bowers',
-        'email': 'x@example.com',
-        'year': 1985,
-        'twitter': 'https://twitter.com/PacktPub'
+        "name": "Xander Bowers",
+        "email": "x@example.com",
+        "year": 1985,
+        "twitter": "https://twitter.com/PacktPub",
     }
 
     request = urllib.request.Request(
-        url = urllib.parse.urlunparse(full_url),
-        method = "POST",
-        headers = {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json;charset=utf-8',
+        url=urllib.parse.urlunparse(full_url),
+        method="POST",
+        headers={
+            "Accept": "application/json",
+            "Content-Type": "application/json;charset=utf-8",
         },
-        data = json.dumps(document).encode('utf-8')
+        data=json.dumps(document).encode("utf-8"),
     )
 
     try:
@@ -67,8 +70,8 @@ if __name__ == "__main__":
             document = json.loads(response.read().decode("utf-8"))
 
         print(document)
-        assert document['status'] == 'ok'
-        id = document['id']
+        assert document["status"] == "ok"
+        id = document["id"]
     except urllib.error.HTTPError as ex:
         print(ex.status)
         print(ex.headers)
@@ -77,21 +80,22 @@ if __name__ == "__main__":
     # 3. GET to see the players.
 
     from pprint import pprint
+
     full_url = urllib.parse.ParseResult(
         scheme="http",
         netloc="127.0.0.1:5000",
         path="/dealer" + "/players",
         params=None,
         query=None,
-        fragment=None
+        fragment=None,
     )
 
     request = urllib.request.Request(
-        url = urllib.parse.urlunparse(full_url),
-        method = "GET",
-        headers = {
-            'Accept': 'application/json',
-        }
+        url=urllib.parse.urlunparse(full_url),
+        method="GET",
+        headers={
+            "Accept": "application/json",
+        },
     )
 
     with urllib.request.urlopen(request) as response:
@@ -103,25 +107,26 @@ if __name__ == "__main__":
 
     # 4. GET to see a specific player.
 
-    id = '75f1bfbda3a8492b74a33ee28326649c'
+    id = "75f1bfbda3a8492b74a33ee28326649c"
     full_url = urllib.parse.ParseResult(
         scheme="http",
         netloc="127.0.0.1:5000",
         path="/dealer" + "/players/{id}".format(id=id),
         params=None,
         query=None,
-        fragment=None
+        fragment=None,
     )
 
     request = urllib.request.Request(
-        url = urllib.parse.urlunparse(full_url),
-        method = "GET",
-        headers = {
-            'Accept': 'application/json',
-        }
+        url=urllib.parse.urlunparse(full_url),
+        method="GET",
+        headers={
+            "Accept": "application/json",
+        },
     )
 
     from urllib.error import HTTPError
+
     try:
         with urllib.request.urlopen(request) as response:
             print(response.status)

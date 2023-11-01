@@ -6,6 +6,7 @@ from ch07_r06a import *
 
 import bisect
 
+
 class Hand:
     def __init__(self, card_iter):
         self.cards = list(card_iter)
@@ -36,8 +37,9 @@ class Hand:
                 return False
         return True
 
+
 __test__ = {
-    'hand': '''
+    "hand": """
 >>> import random
 >>> random.seed(4)
 >>> deck = make_deck()
@@ -51,12 +53,14 @@ __test__ = {
 True
 >>> sum(c.points() for c in h)
 56
-'''
+"""
 }
 
 import random
+
+
 def pick_seed():
-    pinochle = Hand( [make_card(11,'♢'), make_card(12,'♠')] )
+    pinochle = Hand([make_card(11, "♢"), make_card(12, "♠")])
     for seed in range(4096):
         random.seed(seed)
         deck = make_deck()
@@ -67,7 +71,9 @@ def pick_seed():
             return
     print("No Pinochle in range(4096)")
 
+
 if __name__ == "__main__":
     import doctest
+
     doctest.testmod()
     pick_seed()

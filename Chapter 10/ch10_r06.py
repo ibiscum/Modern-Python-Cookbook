@@ -7,7 +7,7 @@ from ch10_r05 import get_data
 from pathlib import Path
 
 if __name__ == "__main__":
-    source_path = Path('co2_mm_mlo.txt')
+    source_path = Path("co2_mm_mlo.txt")
     with source_path.open() as source_file:
         all_data = list(get_data(source_file))
     y1959 = [r.interpolated for r in all_data if r.year == 1959]
@@ -19,6 +19,8 @@ from collections import Counter
 import time
 
 import itertools
+
+
 def all_combos(s1, s2):
     """Builds sets and then picks elements from sequences for
     all possible combinations of subset values.
@@ -34,63 +36,67 @@ def all_combos(s1, s2):
     """
     start = time.perf_counter()
 
-    T_obs = mean(s1)-mean(s2)
-    print( "T_obs = m_1-m_2 = {:.2f}-{:.2f} = {:.2f}".format(
-        mean(s1), mean(s2), T_obs)
-    )
+    T_obs = mean(s1) - mean(s2)
+    print("T_obs = m_1-m_2 = {:.2f}-{:.2f} = {:.2f}".format(mean(s1), mean(s2), T_obs))
 
     below = above = 0
-    pool = s1+s2
+    pool = s1 + s2
     universe = set(range(len(pool)))
     for a_inxs in itertools.combinations(universe, len(s1)):
         b_inxs = universe - set(a_inxs)
-        #a = list(pool[i] for i in a_inxs)
-        #b = list(pool[i] for i in b_inxs)
+        # a = list(pool[i] for i in a_inxs)
+        # b = list(pool[i] for i in b_inxs)
         m_a = mean(pool[i] for i in a_inxs)
         m_b = mean(pool[i] for i in b_inxs)
-        #print( a_inxs, a, m_a )
-        #print( b_inxs, b, m_b )
-        if m_a-m_b < T_obs:
+        # print( a_inxs, a, m_a )
+        # print( b_inxs, b, m_b )
+        if m_a - m_b < T_obs:
             below += 1
         else:
             above += 1
-    print( "below {:,} {:.1%}, above {:,} {:.1%}".format(
-        below, below/(below+above),
-        above, above/(below+above)))
+    print(
+        "below {:,} {:.1%}, above {:,} {:.1%}".format(
+            below, below / (below + above), above, above / (below + above)
+        )
+    )
 
     end = time.perf_counter()
-    print('time', end-start)
+    print("time", end - start)
+
 
 import random
 from statistics import mean
 from collections import Counter
+
+
 def randomized(s1, s2, limit=270415):
     start = time.perf_counter()
 
-    T_obs = mean(s2)-mean(s1)
-    print( "T_obs = m_2-m_1 = {:.2f}-{:.2f} = {:.2f}".format(
-        mean(s2), mean(s1), T_obs)
-    )
+    T_obs = mean(s2) - mean(s1)
+    print("T_obs = m_2-m_1 = {:.2f}-{:.2f} = {:.2f}".format(mean(s2), mean(s1), T_obs))
 
     counts = Counter()
-    universe = s1+s2
+    universe = s1 + s2
     for resample in range(limit):
         random.shuffle(universe)
-        a = universe[:len(s2)]
-        b = universe[len(s2):]
-        delta = int(1000*(mean(a) - mean(b)))
+        a = universe[: len(s2)]
+        b = universe[len(s2) :]
+        delta = int(1000 * (mean(a) - mean(b)))
         counts[delta] += 1
 
-    T = int(1000*T_obs)
-    below = sum(v for k,v in counts.items() if k < T )
-    above = sum(v for k,v in counts.items() if k >= T )
+    T = int(1000 * T_obs)
+    below = sum(v for k, v in counts.items() if k < T)
+    above = sum(v for k, v in counts.items() if k >= T)
 
-    print( "below {:,} {:.1%}, above {:,} {:.1%}".format(
-        below, below/(below+above),
-        above, above/(below+above)))
+    print(
+        "below {:,} {:.1%}, above {:,} {:.1%}".format(
+            below, below / (below + above), above, above / (below + above)
+        )
+    )
 
     end = time.perf_counter()
-    print('time', end-start)
+    print("time", end - start)
+
 
 def test():
     s1 = (1, 2, 3, 4)  # mean = 2.5, stdev = 1.29
@@ -99,6 +105,7 @@ def test():
 
     s3 = (3, 4, 5, 6)  # mean = 4.5
     all_combos(s1, s3)
+
 
 def demo():
     m_1959 = mean(y1959)
@@ -119,6 +126,7 @@ def demo():
 
     print("\n\n1959 v. 2014")
     randomized(y1959, y2014)
+
 
 if __name__ == "__main__":
     test()

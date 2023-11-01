@@ -7,8 +7,9 @@ from math import log
 LO = 1
 HI = 12
 
+
 def hinter(target, summary):
-    count= 1
+    count = 1
     guess = int(input("Enter an initial guess: "))
     while guess != target:
         count += 1
@@ -26,17 +27,18 @@ def hinter(target, summary):
     print()
     summary[count] += 1
 
+
 if __name__ == "__main__":
     frequency = Counter()
     hinter(random.randint(LO, HI), frequency)
     again = input("Again? ").lower()
-    while again.startswith('y'):
+    while again.startswith("y"):
         hinter(random.randint(LO, HI), frequency)
         again = input("Again? ").lower()
 
-    total = sum(frequency[count]*count for count in frequency)
+    total = sum(frequency[count] * count for count in frequency)
     count = sum(frequency[count] for count in frequency)
     print("Your performance")
     print(frequency)
-    print("avg =", total/count)
-    print("ideally", log(HI-LO+1, 2))
+    print("avg =", total / count)
+    print("ideally", log(HI - LO + 1, 2))
