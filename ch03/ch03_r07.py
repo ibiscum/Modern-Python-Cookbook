@@ -5,6 +5,7 @@ Chapter 3, Recipe 7
 
 import timeit
 import doctest
+from functools import lru_cache
 
 
 def prod(int_iter):
@@ -43,9 +44,6 @@ def fact_w(n):
         n = n - 1
         p *= n
     return p
-
-
-from functools import lru_cache
 
 
 @lru_cache(128)
